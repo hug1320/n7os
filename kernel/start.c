@@ -3,6 +3,7 @@
 #include <n7OS/processor_structs.h>
 #include <n7OS/console.h>
 #include <n7OS/handler_IT_50_C.h>
+#include <n7OS/time.h>
 
 void kernel_start(void) {
     init_console();
@@ -12,6 +13,7 @@ void kernel_start(void) {
     
     // initialisation des interruptions
     init_IT_50();
+    init_timer();
 
     // lancement des interruptions
     sti();
@@ -21,7 +23,8 @@ void kernel_start(void) {
 
     // on ne doit jamais sortir de kernel_start
     while (1) {
+        print_timer();
         // cette fonction arrete le processeur
-        hlt();
+        //hlt();
     }
 }
