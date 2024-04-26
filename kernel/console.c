@@ -1,5 +1,6 @@
 #include <n7OS/console.h>
 #include <n7OS/cpu.h>
+#include <n7OS/time.h>
 
 uint16_t* scr_tab;
 int cursor_pos;
@@ -7,10 +8,11 @@ int cursor_pos;
 void init_console() {
     scr_tab = (uint16_t*)SCREEN_ADDR;
     console_clear();
+    init_topbar();
 }
 
 void console_scroll() {
-    for (int i = 0; i < VGA_WIDTH * (VGA_HEIGHT - 1); i++) {
+    for (int i = VGA_WIDTH; i < VGA_WIDTH * (VGA_HEIGHT - 1); i++) {
         scr_tab[i] = scr_tab[i + VGA_WIDTH];
     }
     for (int i = VGA_WIDTH * (VGA_HEIGHT - 1); i < VGA_WIDTH * VGA_HEIGHT; i++) {
@@ -30,7 +32,7 @@ void console_clear() {
     for (int i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++) {
         scr_tab[i] = CHAR_COLOR << 8 | ' ';
     }
-    cursor_pos = 0;
+    cursor_pos = VGA_WIDTH;
     console_move_cursor();
 }
 
@@ -59,4 +61,18 @@ void console_putbytes(const char* s, int len) {
     for (int i = 0; i < len; i++) {
         console_putchar(s[i]);
     }
+}
+
+void update_topbar_uptime() {
+    char * buffer = format_timer();
+    for (int i = VGA_WIDTH - 8; i < VGA_WIDTH; i++) {
+        scr_tab[i] = (BLINK | GRAY << 4 | RED ) << 8 | buffer[i - VGA_WIDTH + 8];
+    }
+}
+
+void init_topbar() {
+    for (int i = 0; i < VGA_WIDTH; i++) {
+        scr_tab[i] = (BLINK | GRAY << 4 | RED ) << 8 | ' ';
+    }
+    update_topbar_uptime();
 }

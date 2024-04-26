@@ -23,8 +23,7 @@ void kernel_start(void) {
 
     // on ne doit jamais sortir de kernel_start
     while (1) {
-        print_timer();
         // cette fonction arrete le processeur
-        //hlt();
+        hlt();
     }
 }
