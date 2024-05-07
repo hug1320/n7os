@@ -25,6 +25,6 @@ typedef struct {
   uint16_t offset_sup;
 } idt_entry_t;
 
-void init_irq_entry(int irq_num, uint32_t addr);
+void init_idt_entry(int irq_num, uint32_t addr);
 
 #endif
