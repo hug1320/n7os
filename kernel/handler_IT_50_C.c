@@ -1,5 +1,6 @@
 #include <inttypes.h>
 #include <n7OS/irq.h>
+#include <stdio.h>
 
 extern void handler_IT_50();
 

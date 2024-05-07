@@ -6,6 +6,7 @@
 #include <n7OS/time.h>
 #include <n7OS/sys.h>
 #include <unistd.h>
+#include <stdio.h>
 
 void kernel_start(void) {
     init_console();

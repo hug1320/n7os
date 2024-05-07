@@ -45,4 +45,12 @@ void init_console();
  */
 void console_putbytes(const char *s, int len);
 
+void console_putchar(const char c);
+
+void update_topbar_uptime();
+
+void init_topbar();
+
+void console_clear();
+
 #endif

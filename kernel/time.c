@@ -2,6 +2,7 @@
 #include <n7OS/irq.h>
 #include <n7OS/cpu.h>
 #include <n7OS/console.h>
+#include <stdio.h>
 
 extern void handler_IT_32();
 
