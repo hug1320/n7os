@@ -48,8 +48,10 @@ void console_putchar(const char c) {
         cursor_pos += 4 - cursor_pos % 4;
     }
     else if (c == '\b') {
-        scr_tab[cursor_pos] = CHAR_COLOR << 8 | ' ';
-        cursor_pos--;
+        if (cursor_pos > VGA_WIDTH) {
+            cursor_pos--;
+            scr_tab[cursor_pos] = CHAR_COLOR << 8 | ' ';
+        }
     }
     if (cursor_pos >= VGA_WIDTH * VGA_HEIGHT) {
         console_scroll();
@@ -64,15 +66,15 @@ void console_putbytes(const char* s, int len) {
 }
 
 void update_topbar_uptime() {
-    char * buffer = format_timer();
+    char* buffer = format_timer();
     for (int i = VGA_WIDTH - 8; i < VGA_WIDTH; i++) {
-        scr_tab[i] = (BLINK | GRAY << 4 | RED ) << 8 | buffer[i - VGA_WIDTH + 8];
+        scr_tab[i] = (BLINK | GRAY << 4 | RED) << 8 | buffer[i - VGA_WIDTH + 8];
     }
 }
 
 void init_topbar() {
     for (int i = 0; i < VGA_WIDTH; i++) {
-        scr_tab[i] = (BLINK | GRAY << 4 | RED ) << 8 | ' ';
+        scr_tab[i] = (BLINK | GRAY << 4 | RED) << 8 | ' ';
     }
     update_topbar_uptime();
 }

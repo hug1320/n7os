@@ -4,6 +4,7 @@
 #include <n7OS/console.h>
 #include <n7OS/handler_IT_50_C.h>
 #include <n7OS/time.h>
+#include <n7OS/keyboard.h>
 #include <n7OS/sys.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -18,6 +19,7 @@ void kernel_start(void) {
     // initialisation des interruptions
     init_IT_50();
     init_timer();
+    init_keyboard();
 
     // lancement des interruptions
     sti();
