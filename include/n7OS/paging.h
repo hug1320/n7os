@@ -12,7 +12,14 @@
  * 
  */
 typedef struct {
-    // a completer
+    uint32_t present : 1;
+    uint32_t writeable : 1;
+    uint32_t user : 1;
+    uint32_t accessed : 1;
+    uint32_t dirty : 1;
+    uint32_t available : 3;
+    uint32_t reserved : 4;
+    uint32_t page : 20;
 } page_table_entry_t;
 
 /**
@@ -46,4 +53,30 @@ void initialise_paging();
  * @return PageTable    La table de page modifiée
  */
 PageTable alloc_page_entry(uint32_t address, int is_writeable, int is_kernel);
+
+/**
+ * @brief Description d'une entrée dans le répertoire de page
+*/
+typedef struct {
+    uint32_t present : 1;
+    uint32_t writeable : 1;
+    uint32_t user : 1;
+    uint32_t reserved : 9;
+    uint32_t page : 20;
+} page_directory_entry_t;
+
+/**
+ * @brief Une entrée dans le répertoire de page peut être manipulée en utilisant
+ *        la structure page_directory_entry_t ou directement la valeur
+ */
+typedef union {
+    page_directory_entry_t page_dir_entry;
+    uint32_t value;
+} PDE; // PDE = Page Directory Entry
+
+/**
+ * @brief Description d'un répertoire de page
+*/
+typedef PDE * PageDirectory;
+
 #endif

@@ -8,6 +8,12 @@
 #include <inttypes.h>
 
 /**
+ * @brief Initialise le gestionnaire de la zone de tas du noyau
+ * 
+ */
+void init_kheap();
+
+/**
  * @brief Alloue une zone mémoire de taille sz. C'est une version simplifiée de kmalloc().
  * 
  * @param sz        Taille de la zone mémoire à allouer

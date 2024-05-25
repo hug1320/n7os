@@ -1,11 +1,17 @@
 #include <n7OS/kheap.h>
+#include <stdio.h>
 
 /**
  * @brief Lorsque tout le code du noyau est compilé, le tas du noyau commence juste après.
  * 
  */
 extern uint32_t mem_heap;
-uint32_t placement_address = (uint32_t)&mem_heap;
+uint32_t placement_address;
+
+void init_kheap() {
+    placement_address = (uint32_t)&mem_heap;
+    // printf("Heap initialized at %x\n", placement_address);
+}
 
 uint32_t kmalloc_int(uint32_t sz, int align, uint32_t *phys) {
     uint32_t address;
