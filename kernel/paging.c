@@ -26,14 +26,6 @@ void initialise_paging() {
     for (uint32_t i = 0; i < index; i += PAGE_SIZE) {
         alloc_page_entry(i, 1, 1);
     }
-    /*
-    for (int i = mem_heap; i < mem_end; i + PAGE_SIZE) {
-        idx_pdr;
-        idx_ptb;
-        pdr[idx_pdr].ptb[idx_ptb].page_entry.page = i;
-        // vérifier les conditions sur idx pour bien swwitcher qd il faut
-    }
-    */
 
     // On initialise le répertoire de page
     __asm__ __volatile__("mov %0, %%cr3"::"r"(pageDir));
@@ -72,13 +64,11 @@ PageTable alloc_page_entry(uint32_t address, int is_writeable, int is_kernel) {
     // on recupere l'adresse de la page de table dans le répertoire de page
     page_table = (PageTable)(page_dir_entry.page_dir_entry.page << 12);
 
-    // recherche d'une page libre dans la memoire physique
-    //uint32_t phy_page = findfreePage();
-
     // calcul de la position de la page dans la table de page
     int idx_pagetab = (address >> 12) & 0x3FF;
 
     // mise a jour de l'entree dans la page de table
     setPageEntry(&page_table[idx_pagetab], address, is_writeable, is_kernel);
+    setPage(address);
     return page_table;
 }

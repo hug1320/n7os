@@ -35,7 +35,7 @@ uint32_t findfreePage() {
             for (int j = 0; j < 32; j++) {
                 if ((free_page_bitmap_table[i] & (1 << j)) == 0) {
                     free_page_bitmap_table[i] |= (1 << j);
-                    return ((uint32_t) i * 32 + j);
+                    return ((uint32_t)i * 32 + j);
                 }
             }
         }
@@ -56,14 +56,19 @@ void init_mem() {
  * @brief Affiche l'état de la mémoire physique
  */
 void print_mem() {
-    for (int i = 0; i < (LAST_MEMORY_INDEX + 1) / PAGE_SIZE / 32; i++) {
-        for (int j = 0; j < 32; j++) {
-            if ((free_page_bitmap_table[i] & (1 << j)) == 0) {
-                printf("0");
-            }
-            else {
-                printf("1");
-            }
+    // nombre de pages à print
+    int nb_page_print = 64;
+
+    // stolen and adapted from Nathan
+    printf("Mem dump : \n");
+    for (int i = 0; i < nb_page_print; i++) {
+        uint32_t liste_page = free_page_bitmap_table[i];
+        printf("%d ", liste_page);
+        if (i % 16 == 15) {
+            printf("\n");
         }
+    }
+    if (nb_page_print < (LAST_MEMORY_INDEX + 1) / PAGE_SIZE / 32) {
+        printf("...\n");
     }
 }

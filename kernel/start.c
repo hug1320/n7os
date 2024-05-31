@@ -8,6 +8,7 @@
 #include <n7OS/kheap.h>
 #include <n7OS/paging.h>
 #include <n7OS/sys.h>
+#include <n7OS/mem.h>
 #include <unistd.h>
 #include <stdio.h>
 
@@ -39,6 +40,9 @@ void kernel_start(void) {
     if (example() == 1) {
         printf("Appel systeme example ok\n");
     }
+
+    print_mem();
+
     // on ne doit jamais sortir de kernel_start
     while (1) {
         // cette fonction arrete le processeur
