@@ -4,6 +4,10 @@
 #define NR_example 0
 #define NR_shutdown 1
 #define NR_write 2
+#define NR_fork 3
+#define NR_exit 4
+#define NR_getpid 5
+#define NR_sleep 6
 
 // Fonction d'enveloppe sans argument
 #define syscall0(type,name) \
@@ -49,8 +53,14 @@ __asm__ volatile ("int $0x80" \
 return __res;\
 }
 
+#include <n7OS/process.h>
+
 int example();
 int shutdown(int n);
 int write(char* s, int n);
+pid_t fork(const char* name, void (*function)());
+int exit();
+pid_t getpid();
+int sleep(int seconds);
 
 #endif

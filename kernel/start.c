@@ -8,6 +8,7 @@
 #include <n7OS/kheap.h>
 #include <n7OS/paging.h>
 #include <n7OS/sys.h>
+#include <n7OS/process.h>
 #include <n7OS/mem.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -17,7 +18,7 @@ void kernel_start(void) {
     // setup_base(0 /* la memoire virtuelle n'est pas encore definie */);
     init_kheap();
     initialise_paging();
-    
+
     // Test segfault
     // int *p = (int *) 0xA0000000;
     // printf("%x\n", *p);
@@ -35,13 +36,23 @@ void kernel_start(void) {
     // lancement des interruptions
     sti();
 
-    __asm__("int $50"::);
+    // Test interruption
+    // __asm__("int $50"::);
 
+    // Test appel systeme
+    /*
     if (example() == 1) {
         printf("Appel systeme example ok\n");
     }
+    */
 
-    print_mem();
+    //shutdown(1);
+
+    // Affichage de la mémoire virtuelle
+    // print_mem();
+
+    // Initialisation des processus
+    init_process();
 
     // on ne doit jamais sortir de kernel_start
     while (1) {
