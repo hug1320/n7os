@@ -1,6 +1,7 @@
 #include <n7OS/console.h>
 #include <n7OS/cpu.h>
 #include <n7OS/time.h>
+#include <string.h>
 
 uint16_t* scr_tab;
 int cursor_pos;
@@ -68,13 +69,32 @@ void console_putbytes(const char* s, int len) {
 void update_topbar_uptime() {
     char* buffer = format_timer();
     for (int i = VGA_WIDTH - 8; i < VGA_WIDTH; i++) {
-        scr_tab[i] = (BLINK | GRAY << 4 | RED) << 8 | buffer[i - VGA_WIDTH + 8];
+        if (i < VGA_WIDTH - 8) {
+            scr_tab[i] = (BLINK | GRAY << 4 | BLACK) << 8 | ' ';
+        }
+        else {
+            scr_tab[i] = (BLINK | GRAY << 4 | RED) << 8 | buffer[i - VGA_WIDTH + 8];
+        }
     }
 }
 
 void init_topbar() {
+    // Topbar messages
+    char* mail = "hugo@net7.dev";
+    int mail_len = strlen(mail);
+    char* buffer = "n7OS";
+    int buffer_len = strlen(buffer);
+
     for (int i = 0; i < VGA_WIDTH; i++) {
-        scr_tab[i] = (BLINK | GRAY << 4 | RED) << 8 | ' ';
+        if (i >= (VGA_WIDTH - buffer_len) / 2 && i < (VGA_WIDTH + buffer_len) / 2) {
+            scr_tab[i] = (BLINK | GRAY << 4 | RED) << 8 | buffer[i - 38];
+        }
+        else if (i < mail_len) {
+            scr_tab[i] = (BLINK | GRAY << 4 | RED) << 8 | mail[i];
+        }
+        else {
+            scr_tab[i] = (BLINK | GRAY << 4 | BLACK) << 8 | ' ';
+        }
     }
     update_topbar_uptime();
 }

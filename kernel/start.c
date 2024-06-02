@@ -25,8 +25,13 @@ void kernel_start(void) {
     // (*p)++;
     
     init_syscall();
-    printf("Bienvenue dans le kernel de n7OS\n");
+    printf("Bienvenue dans n7OS\n");
     printf("\n          ,.  ,.\n          ||  ||\n         ,''--''.\n        : (.)(.) :\n       ,'        `.\n       :          :\n       :          :\n       `._m____m_,' \n\n");
+    
+    printf("> Initialisation de la console : OK\n");
+    printf("> Initialisation du tas : OK\n");
+    printf("> Initialisation de la pagination : OK\n");
+    printf("> Initialisation des appels systeme : OK\n");
 
     // initialisation des interruptions
     init_IT_50();

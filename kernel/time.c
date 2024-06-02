@@ -19,6 +19,7 @@ void init_timer() {
     pic();
     outb(inb(0x21) & 0xfe, 0x21);
     init_sleeping_process();
+    printf("> Initialisation du timer : OK\n");
 }
 
 void init_sleeping_process() {

@@ -14,10 +14,11 @@ static process_t process_table[MAX_PROCESS];
 
 void init_process() {
     intialize_process_table();
+    printf("> Initialisation des processus : OK\n");
     
     process_table[new_process("Idle", idle)].state = ELU;
-    new_process("Processus 1", processus1);
-    new_process("Processus 2", processus1);
+    //new_process("Processus 1", processus1);
+    //new_process("Processus 2", processus1);
     idle();
 }
 
@@ -46,7 +47,7 @@ pid_t new_process(const char* name, fnptr function) {
             // initialisation de la pile
             process_table[i].stack[STACK_SIZE - 1] = (uint32_t)function;
 
-            printf("Nouveau processus %d : %s\n", i, name);
+            printf("Nouveau processus : %s (pid %d)\n", name, i);
 
             return i;
         }
@@ -65,6 +66,10 @@ pid_t get_current_pid() {
 
 int exit_current() {
     int32_t current_pid = getpid();
+    if (current_pid == 0) {
+        printf("Impossible de terminer le processus Idle\n");
+        return -1;
+    }
     process_table[current_pid].state = BLOQUE;
     process_table[current_pid].pid = -1;
     process_table[current_pid].name[0] = '\0';
@@ -99,7 +104,7 @@ void schedule() {
         if (process_table[i % MAX_PROCESS].state == PRET) {
             process_table[current_pid].state = PRET;
             process_table[i % MAX_PROCESS].state = ELU;
-            printf("Switching to process %d : %s\n", i % MAX_PROCESS, process_table[i % MAX_PROCESS].name);
+            //printf("Switching to process %d : %s\n", i % MAX_PROCESS, process_table[i % MAX_PROCESS].name);
             sti();
             ctx_sw(process_table[current_pid].regs, process_table[i % MAX_PROCESS].regs);
             return;

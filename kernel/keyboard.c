@@ -1,6 +1,8 @@
 #include <n7OS/irq.h>
 #include <n7OS/cpu.h>
+#include <unistd.h>
 #include <stdio.h>
+
 #define SCANCODE_TABLE_SIZE 128
 
 extern void handler_IT_33();
@@ -59,6 +61,7 @@ int extended = 0;
 void init_keyboard() {
     init_idt_entry(0x21, (uint32_t)handler_IT_33);
     outb(inb(0x21) & 0xfd, 0x21);
+    printf("> Initialisation du clavier : OK\n");
 }
 
 void handler_IT_33_C() {
@@ -146,6 +149,13 @@ void handler_IT_33_C() {
             default:
                 if (shift > 0 || caps_lock) {
                     printf("%c", char_map_maj[scancode]);
+                }
+                else if (ctrl > 0) {
+                    // exit on ctrl+c or ctrl+d
+                    if (char_map[scancode] == 'c' || char_map[scancode] == 'd') {
+                        shutdown(1);
+                    }
+                    printf("^%c", char_map[scancode]);
                 }
                 else {
                     printf("%c", char_map[scancode]);
